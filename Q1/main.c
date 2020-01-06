@@ -84,3 +84,4 @@ void FreeAll(int* prim, int* min, int* InT, Item_l* network, Item_t** location, 
 	FreeLocation(location);
 	FreePQ(PQ);
 }
+//
