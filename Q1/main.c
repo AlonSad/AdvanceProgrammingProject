@@ -24,7 +24,7 @@ int GetIndexOfPointer(Item_t** location, Item_t* node_pointer);
 
 
 
-void FreeAll(int* prim, int* min, int* InT, Item_l* network, Item_t** location, PQ_l PQ, int size);
+void FreeAll(Min_tree minimial_tree, Item_l* network, Item_t** location, PQ_l PQ, int size);
 
 void main(int argc, char* argv[])
 {
@@ -35,9 +35,10 @@ void main(int argc, char* argv[])
 	}
 	int size, v0;
 	Item_l* network = ParseFile(argv[1], &size);
-	int* prim = InitialPrimArray(size);
-	int* min = InitialMinArray(size);
-	int* InT = InitialInT(size);
+	Min_tree minimal_tree = { size, InitialPrimArray(size),  InitialMinArray(size) , InitialInT(size) };
+	//int* prim = InitialPrimArray(size);
+	//int* min = InitialMinArray(size);
+	//int* InT = InitialInT(size);
 
 	Item_t** location = CreateLocationArray(size); // array of pointers PQ nodes
 	PQ_l PQ = BuildPQ(location, size);
@@ -45,43 +46,43 @@ void main(int argc, char* argv[])
 	printf("%s:", "Please insert the first computer number");
 	scanf("%d", &v0);
 
-	SetMin(min, v0, 0);
-	SetPrim(prim, v0, 0);
-	DecreaseKey(location, PQ, min, v0);
+	SetMin(minimal_tree.min, v0, 0);
+	SetPrim(minimal_tree.prim, v0, 0);
+	DecreaseKey(location, PQ, minimal_tree.min, v0);
 	Item_t* node = PQ.head->next;
 	while (node != NULL)
 	{
+		// node is the min in PQ
 		int u = GetIndexOfPointer(location, DeleteMin(PQ));
-		if (min[u] == INT_MAX)
+		if (minimal_tree.min[u] == INT_MAX)
 		{
 			printf("%s", "Cannot build Prim");
 			exit(1);
 		}
-		SetInT(InT, u);
+		SetInT(minimal_tree.InT, u);
 		Item_l* u_neighbor = network[u].next;
 		while (u_neighbor != NULL)
 		{
-			if (!GetInT(InT, u) && u_neighbor->w < GetMin(min, u))
+			if (!GetInT(minimal_tree.InT, u) && u_neighbor->w < GetMin(minimal_tree.min, u))
 			{
-				SetMin(min, u, u_neighbor->w);
-				SetPrim(prim, u, u_neighbor->neighbor);
-				DecreaseKey(location, PQ, min, u_neighbor->neighbor);
+				SetMin(minimal_tree.min, u, u_neighbor->w);
+				SetPrim(minimal_tree.prim, u, u_neighbor->neighbor);
+				DecreaseKey(location, PQ, minimal_tree.min, u_neighbor->neighbor);
 			}
 		}
 		node = node->next;
 	}
-	PrintPrimTree(prim, size);
-	PrintTotalCost(min, size);
-	FreeAll(prim, min, InT, network, location, PQ, size);
+	PrintPrimTree(minimal_tree.prim, size);
+	PrintTotalCost(minimal_tree.min, size);
+	FreeAll(minimal_tree, network, location, PQ, size);
 }
 
-void FreeAll(int* prim, int* min, int* InT, Item_l* network, Item_t** location, PQ_l PQ, int size)
+void FreeAll(Min_tree minimal_tree, Item_l* network, Item_t** location, PQ_l PQ, int size)
 {
-	FreePrim(prim);
-	FreeMin(min);
-	FreeInT(InT);
+	FreePrim(minimal_tree.prim);
+	FreeMin(minimal_tree.min);
+	FreeInT(minimal_tree.InT);
 	FreeNetwork(network, size);
 	FreeLocation(location);
 	FreePQ(PQ);
 }
-//

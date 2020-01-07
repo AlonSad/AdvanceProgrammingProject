@@ -19,7 +19,14 @@ void SetPrim(int* prim, int v, int parent)
 	prim[v] = parent;
 }
 
-void PrintPrimTree(int* prim, int size);
+void PrintPrimTree(int* prim, int size)
+{
+	printf("%s", "The connections are: ");
+	for(int i = 1; i< size; i++)
+	{
+		printf("(%d,%d) ", prim[i], i);
+	}
+}
 
 
 void FreePrim(int* prim)

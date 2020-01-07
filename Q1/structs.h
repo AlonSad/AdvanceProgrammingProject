@@ -17,3 +17,11 @@ typedef struct pq
 	struct item_t* head;
 	struct item_t* tail;
 } PQ_l;
+
+typedef struct min_tree
+{
+	int size;
+	int* prim;
+	int* min;
+	int* InT;
+} Min_tree;
