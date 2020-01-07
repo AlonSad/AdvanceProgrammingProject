@@ -15,4 +15,5 @@ typedef struct item_t
 typedef struct pq
 {
 	struct item_t* head;
+	struct item_t* tail;
 } PQ_l;
