@@ -24,7 +24,7 @@ int GetIndexOfPointer(Item_t** location, Item_t* node_pointer);
 
 
 
-void FreeAll(Min_tree minimial_tree, Item_l* network, Item_t** location, PQ_l PQ, int size);
+void FreeAll(Min_tree minimal_tree, Item_l* network, Item_t** location, PQ_l PQ, int size);
 
 void main(int argc, char* argv[])
 {
@@ -35,7 +35,7 @@ void main(int argc, char* argv[])
 	}
 	int size, v0;
 	Item_l* network = ParseFile(argv[1], &size);
-	Min_tree minimal_tree = { size, InitialPrimArray(size),  InitialMinArray(size) , InitialInT(size) };
+	Min_tree minimal_tree = { size, InitialPrimArray(size),  InitialMinArray(size), InitialInT(size) };
 	//int* prim = InitialPrimArray(size);
 	//int* min = InitialMinArray(size);
 	//int* InT = InitialInT(size);
