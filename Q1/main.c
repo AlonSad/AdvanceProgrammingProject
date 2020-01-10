@@ -12,8 +12,8 @@ Item_l* ParseFile(char* file, int* size);
 void FreeNetwork(Item_l* network, int size);
 
 // PQ section
-PQ_l BuildPQ(Item_t** location, int size);
-void DecreaseKey(Item_t** location, PQ_l PQ, int* min, int v); // Change global var PQ
+PQ_l BuildPQ(Item_t** location, int* min, int size);
+void DecreaseKey(Item_t** location, PQ_l PQ, int v); // Change global var PQ
 Item_t* DeleteMin(PQ_l PQ);
 void SortPQ(PQ_l PQ);
 Item_t* GetMinInPQ(PQ_l PQ); // not in headers (should be private)
@@ -41,18 +41,18 @@ void main(int argc, char* argv[])
 	//int* InT = InitialInT(size);
 
 	Item_t** location = CreateLocationArray(size); // array of pointers PQ nodes
-	PQ_l PQ = BuildPQ(location, size);
+	PQ_l PQ = BuildPQ(location, minimal_tree.min, size);
 
 	printf("%s:", "Please insert the first computer number");
 	scanf("%d", &v0);
 
 	SetMin(minimal_tree.min, v0, 0);
 	SetPrim(minimal_tree.prim, v0, 0);
-	DecreaseKey(location, PQ, minimal_tree.min, v0);
+	DecreaseKey(location, PQ, v0);
 	Item_t* node = PQ.head->next;
 	while (node != NULL)
 	{
-		// node is the min in PQ
+		// node is min in PQ
 		int u = GetIndexOfPointer(location, DeleteMin(PQ));
 		if (minimal_tree.min[u] == INT_MAX)
 		{
@@ -67,7 +67,7 @@ void main(int argc, char* argv[])
 			{
 				SetMin(minimal_tree.min, u, u_neighbor->w);
 				SetPrim(minimal_tree.prim, u, u_neighbor->neighbor);
-				DecreaseKey(location, PQ, minimal_tree.min, u_neighbor->neighbor);
+				DecreaseKey(location, PQ, u_neighbor->neighbor);
 			}
 		}
 		node = node->next;

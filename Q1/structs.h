@@ -8,7 +8,7 @@ typedef struct item_l
 typedef struct item_t
 {
 	int vertex;
-	int min;
+	int* min;
 	struct item_t* next;
 } Item_t;
 
