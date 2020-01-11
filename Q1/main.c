@@ -24,7 +24,9 @@ int GetIndexOfPointer(Item_t** location, Item_t* node_pointer);
 
 
 
-void FreeAll(Min_tree minimal_tree, Item_l* network, Item_t** location, PQ_l PQ, int size);
+void FreeTree(Min_tree minimal_tree);
+void Q1(Min_tree minimal_tree, Item_l* network, int size, int v0);
+void Q2(int* prim, int size);
 
 void main(int argc, char* argv[])
 {
@@ -39,7 +41,14 @@ void main(int argc, char* argv[])
 	//int* prim = InitialPrimArray(size);
 	//int* min = InitialMinArray(size);
 	//int* InT = InitialInT(size);
+	Q1(minimal_tree, network, size, v0);
+	Q2(minimal_tree.prim, size);
+	FreeTree(minimal_tree);
 
+}
+
+void Q1(Min_tree minimal_tree, Item_l* network, int size, int v0)
+{
 	Item_t** location = CreateLocationArray(size); // array of pointers PQ nodes
 	PQ_l PQ = BuildPQ(location, minimal_tree.min, size);
 
@@ -69,20 +78,26 @@ void main(int argc, char* argv[])
 				SetPrim(minimal_tree.prim, u, u_neighbor->neighbor);
 				DecreaseKey(location, PQ, u_neighbor->neighbor);
 			}
+			u_neighbor = u_neighbor->next;
 		}
 		node = node->next;
 	}
 	PrintPrimTree(minimal_tree.prim, size);
 	PrintTotalCost(minimal_tree.min, size);
-	FreeAll(minimal_tree, network, location, PQ, size);
+	FreePQ(PQ);
+	FreeNetwork(network, size);
+	FreeLocation(location);
 }
 
-void FreeAll(Min_tree minimal_tree, Item_l* network, Item_t** location, PQ_l PQ, int size)
+void Q2(int* prim, int size)
+{
+	// build the relevant list
+	// 
+}
+
+void FreeTree(Min_tree minimal_tree)
 {
 	FreePrim(minimal_tree.prim);
 	FreeMin(minimal_tree.min);
 	FreeInT(minimal_tree.InT);
-	FreeNetwork(network, size);
-	FreeLocation(location);
-	FreePQ(PQ);
 }

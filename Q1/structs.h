@@ -25,3 +25,17 @@ typedef struct min_tree
 	int* min;
 	int* InT;
 } Min_tree;
+
+
+typedef enum
+{
+	FALSE,
+	TRUE,
+}BOOL;
+
+typedef enum
+{
+	WHITE,
+	GREY,
+	BLACK,
+}State_COLOR;
